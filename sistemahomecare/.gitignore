@@ -1,0 +1,8 @@
+/target/
+web.xml
+*.prefs.xml
+*.prefs
+*.component
+*core.xml
+.project
+.classpath
