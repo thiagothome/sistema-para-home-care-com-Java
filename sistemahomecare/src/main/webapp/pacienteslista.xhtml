@@ -1,0 +1,81 @@
+<ui:composition template="/template/template.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://java.sun.com/jsf/facelets">
+
+	<ui:define name="conteudo">
+		<h2 class="list-title">Pacientes</h2>
+		<h:outputText
+			value="Bem-vindo, #{planoDeCuidadoController.usuarioLogado.colaborador.nome_colaborador}" />
+		<h:form id="formListar">
+			<p:messages id="msgs" style="color:red" />
+			<p:dataTable var="paciente"
+				value="#{pacienteController.listaPacientes()}"
+				emptyMessage="Nenhum paciente encontrado." paginator="true"
+				rows="10">
+				<p:column headerText="Nome">
+					<h:outputText value="#{paciente.nome_paciente}" />
+				</p:column>
+				<p:column headerText="Nascimento">
+					<h:outputText
+						value="#{pacienteController.formatarData(paciente.nascimento)}" />
+				</p:column>
+				<p:column headerText="Diagnóstico">
+					<h:outputText value="#{paciente.patologia}" />
+				</p:column>
+				<p:column headerText="Ações">
+					<p:commandButton icon="fa fa-trash"
+						action="#{pacienteController.excluir(paciente)}" value="Excluir"
+						process="@this" ajax="true" styleClass="btn btn-danger btn-sm"
+						update="formListar" />
+					<p:commandButton icon="fa fa-edit" value="Editar" process="@this"
+						ajax="true" styleClass="btn btn-primary" update="formEditar"
+						oncomplete="PF('dlgEditar').show()">
+						<f:setPropertyActionListener value="#{paciente}"
+							target="#{pacienteController.paciente}" />
+					</p:commandButton>
+				</p:column>
+			</p:dataTable>
+		</h:form>
+
+		<h:form id="formEditar">
+			<p:dialog widgetVar="dlgEditar" header="Editar paciente" modal="true"
+				resizable="false" width="600" height="auto">
+				<p:messages id="msgs" />
+				<p:panelGrid columns="2" style="margin-bottom:10px"
+					columnClasses="label,value">
+					<p:outputLabel for="nome" value="Nome:" />
+					<p:inputText id="nome"
+						value="#{pacienteController.paciente.nome_paciente}" />
+					<p:outputLabel for="nascimento" value="Nascimento:" />
+					<p:calendar id="nascimento"
+						value="#{pacienteController.nascimento}" locale="pt_BR"
+						pattern="dd/MM/yyyy" required="true" />
+					<p:outputLabel for="patologia" value="Diagnóstico:" />
+					<p:inputText id="patologia"
+						value="#{pacienteController.paciente.patologia}" />
+					<p:commandButton action="#{pacienteController.editar()}"
+						value="Salvar" update=":formListar :formEditar" />
+				</p:panelGrid>
+			</p:dialog>
+		</h:form>
+
+		<h:form id="formBuscar">
+			<p:dialog header="paciente encontrado" widgetVar="dglBuscar"
+				modal="true" resizable="false">
+				<h:panelGrid columns="2">
+					<h:outputText value="ID:" />
+					<h:outputText value="#{pacienteController.paciente.idPaciente}" />
+					<h:outputText value="Nome:" />
+					<h:outputText value="#{pacienteController.paciente.nome_paciente}" />
+					<h:outputText value="Nascimento:" />
+					<h:outputText value="#{pacienteController.paciente.nascimento}" />
+					<h:outputText value="Patologia:" />
+					<h:outputText value="#{pacienteController.paciente.patologia}" />
+				</h:panelGrid>
+			</p:dialog>
+		</h:form>
+	</ui:define>
+</ui:composition>

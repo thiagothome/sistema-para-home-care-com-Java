@@ -1,0 +1,24 @@
+<ui:composition template="/template/template.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://java.sun.com/jsf/facelets">
+
+	<ui:define name="conteudo">
+		<fieldset>
+			<legend>Resposta</legend>
+			<h:form id="formRecado">
+			<p:messages id="msgs" />
+				<p:panelGrid columns="2">
+					<p:outputLabel for="mensagem" value="Mensagem" />
+					<p:inputTextarea id="mensagem"
+						value="#{respostaController.resposta.mensagem}" />
+				</p:panelGrid>
+				<h:inputHidden id="recado" value="#{respostaController.idRecado}" />
+				<p:commandButton value="Enviar"
+					action="#{respostaController.salvar()}" update="formRecado"/>
+			</h:form>
+		</fieldset>
+	</ui:define>
+</ui:composition>

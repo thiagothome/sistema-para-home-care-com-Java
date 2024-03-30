@@ -1,0 +1,43 @@
+<ui:composition template="/template/template.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://java.sun.com/jsf/facelets">
+
+	<ui:define name="conteudo">
+		<h:form id="formSalvar">
+			<h1>Cadastro de pacientes</h1>
+			<h:outputText
+				value="Bem-vindo, #{planoDeCuidadoController.usuarioLogado.colaborador.nome_colaborador}" />
+			<p:messages id="msgs" />
+			<p:panelGrid columns="2" style="margin-bottom:10px"
+				columnClasses="label,value">
+				<p:outputLabel for="nome" value="Nome:" />
+				<p:inputText id="nome"
+					value="#{pacienteController.paciente.nome_paciente}" />
+				<p:outputLabel for="nascimento" value="Nascimento" />
+				<p:calendar id="nascimento"
+					value="#{pacienteController.paciente.nascimento}" locale="pt_BR"
+					pattern="dd/MM/yyyy" />
+				<p:outputLabel for="diagnostico" value="Diagnóstico:" />
+				<p:inputText id="diagnostico"
+					value="#{pacienteController.paciente.patologia}" />
+				<p:outputLabel for="ruaEndereco" value="Rua:" />
+				<p:inputText id="ruaEndereco"
+					value="#{pacienteController.paciente.endereco.rua}" />
+				<p:outputLabel for="numeroEndereco" value="Número:" />
+				<p:inputText id="numeroEndereco"
+					value="#{pacienteController.paciente.endereco.numero}" />
+				<p:outputLabel for="bairroEndereco" value="Bairro:" />
+				<p:inputText id="bairroEndereco"
+					value="#{pacienteController.paciente.endereco.bairro}" />
+				<p:outputLabel for="cidadeEndereco" value="Cidade:" />
+				<p:inputText id="cidadeEndereco"
+					value="#{pacienteController.paciente.endereco.cidade}" />
+			</p:panelGrid>
+			<p:commandButton action="#{pacienteController.salvar()}"
+				value="Salvar" update="formSalvar" />
+		</h:form>
+	</ui:define>
+</ui:composition>

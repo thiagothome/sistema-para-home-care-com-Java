@@ -1,0 +1,39 @@
+<ui:composition template="/template/template.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://java.sun.com/jsf/facelets">
+
+	<ui:define name="conteudo">
+		<h:form id="formCadastrar">
+			<p:messages />
+			<p:panelGrid columns="2">
+				<h:outputLabel for="login" value="Email:" />
+				<p:inputText id="login"
+					value="#{cadastroUsuarioController.usuario.login}"
+					placeholder="exemplo@email.com" />
+
+				<h:outputLabel for="senha" value="Senha:" />
+				<p:password id="senha"
+					value="#{cadastroUsuarioController.usuario.senha}" />
+
+				<h:outputLabel for="colaborador" value="Colaborador:" />
+				<p:selectOneMenu id="colaborador"
+					value="#{cadastroUsuarioController.colaboradorSelecionadoId}">
+					<f:selectItem itemLabel="Selecione um colaborador" itemValue="" />
+					<f:selectItems
+						value="#{colaboradorController.listaColaboradores()}"
+						var="colaborador" itemLabel="#{colaborador.nome_colaborador}"
+						itemValue="#{colaborador.idColaborador}" />
+				</p:selectOneMenu>
+
+				<p:commandButton value="Salvar"
+					action="#{cadastroUsuarioController.cadastrar}"
+					oncomplete="PF('dialog').hide();" process="@form"
+					update="formCadastrar"/>
+			</p:panelGrid>
+		</h:form>
+
+	</ui:define>
+</ui:composition>

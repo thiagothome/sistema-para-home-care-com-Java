@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://java.sun.com/jsf/facelets">
+<h:head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+
+	<link
+		href="https://cdnjs.cloudflare.com/ajax/libs/primeicons/4.1.0/css/primeicons.min.css"
+		rel="stylesheet" />
+	<link
+		href="https://cdnjs.cloudflare.com/ajax/libs/primefaces/11.4.0/css/primefaces.min.css"
+		rel="stylesheet" />
+	<script
+		src="https://cdnjs.cloudflare.com/ajax/libs/primefaces/11.4.0/js/primefaces.min.js"></script>
+
+	<title>Insert title here</title>
+</h:head>
+
+<h:body>
+
+
+	<!-- Header -->
+	<p:layoutUnit position="north" size="100">
+		<h:form styleClass="template-form">
+			<p:menubar
+				style="background-color: background: rgb(148, 232, 162);
+    background: linear-gradient(39deg, rgba(148, 232, 162, 1) 0%, rgba(42, 223, 71, 1) 51%, rgba(12, 215, 45, 1) 100%);
+    border: none">
+				<p:submenu label="Colaboradores" icon="pi pi-fw pi-plus">
+					<p:menuitem value="Listar colaboradores" icon="pi pi-plus"
+						outcome="colaboradoreslista.xhtml" />
+					<p:menuitem value="Novo colaborador" icon="pi pi-plus"
+						outcome="colaboradores.xhtml" />
+
+					<p:submenu label="Usuários" icon="pi pi-fw pi-plus">
+						<p:menuitem value="Novo usuário" icon="pi pi-plus"
+							outcome="cadastrarusuarios.xhtml" />
+					</p:submenu>
+				</p:submenu>
+
+				<p:submenu label="Pacientes" icon="pi pi-fw pi-plus">
+
+					<p:menuitem value="Listar pacientes" icon="pi pi-plus"
+						outcome="pacienteslista.xhtml" />
+					<p:menuitem value="Novo paciente" icon="pi pi-plus"
+						outcome="pacientes.xhtml" />
+
+					<p:submenu label="Planos de cuidados" icon="pi pi-fw pi-plus">
+						<p:menuitem value="Listar planos" icon="pi pi-plus"
+							outcome="planosdecuidadoslista.xhtml" />
+						<p:menuitem value="Novo Plano de cuidado" icon="pi pi-plus"
+							outcome="planodecuidados.xhtml" />
+					</p:submenu>
+
+					<p:submenu label="Atendimentos" icon="pi pi-fw pi-plus">
+						<p:menuitem value="Listar atendimentos" icon="pi pi-plus"
+							outcome="atendimentoslista.xhtml" />
+						<p:menuitem value="Novo Atendimento" icon="pi pi-plus"
+							outcome="atendimento.xhtml" />
+					</p:submenu>
+				</p:submenu>
+
+				<p:submenu label="Recados" icon="pi pi-fw pi-plus">
+					<p:menuitem value="Listar recados" icon="pi pi-plus"
+						outcome="recadoslista.xhtml" />
+
+					<p:menuitem value="Novo recado" icon="pi pi-plus"
+						outcome="recados.xhtml" />
+				</p:submenu>
+
+				<f:facet name="options">
+					<p:inputText style="margin:1px 10px 1px 1px;" placeholder="Search"
+						value="#{colaboradorController.nomeProcurado}"
+						rendered="#{mostrarCampoBuscaColaborador}" />
+					<p:commandButton value="Buscar" oncomplete="PF('dglBuscar').show()"
+						action="#{colaboradorController.buscarPorNome}"
+						update="formDialogo" rendered="#{mostrarCampoBuscaColaborador}" />
+				</f:facet>
+
+				<f:facet name="options">
+					<p:calendar id="dataProcurada"
+						value="#{atendimentoController.dataProcurada}"
+						pattern="yyyy/MM/dd" converter="localDateConversor"
+						rendered="#{mostrarCampoBuscaAtendimento}" placeholder="Search" />
+					<p:commandButton value="Buscar" oncomplete="PF('dglBuscar').show()"
+						action="#{atendimentoController.buscarPorData}"
+						update="formDialogo" rendered="#{mostrarCampoBuscaAtendimento}" />
+				</f:facet>
+
+				<f:facet name="options">
+					<p:calendar id="dataProcuradaPlano"
+						value="#{planoDeCuidadoController.dataProcurada}"
+						pattern="yyyy/MM/dd" converter="localDateConversor"
+						rendered="#{mostrarCampoBuscaPlano}" placeholder="Search" />
+					<p:commandButton value="Buscar" oncomplete="PF('dglBuscar').show()"
+						action="#{planoDeCuidadoController.buscarPorData}"
+						update="formDialogo" rendered="#{mostrarCampoBuscaPlano}" />
+				</f:facet>
+
+				<p:submenu label="Logout" icon="pi pi-fw pi-plus">
+					<p:menuitem value="Sair" action="#{usuarioController.logout}" />
+				</p:submenu>
+			</p:menubar>
+		</h:form>
+	</p:layoutUnit>
+
+	<p:layoutUnit position="center">
+		<ui:insert name="conteudo" />
+	</p:layoutUnit>
+
+
+
+
+</h:body>
+</html>

@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:p="http://primefaces.org/ui">
+<h:head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<title>Insert title here</title>
+	<h:outputStylesheet library="css" name="estilo.css" />
+</h:head>
+<h:body>
+	<h:form styleClass="login-form">
+		<div class="login-container">
+			<h:messages style="color:red" />
+			<p:panelGrid columns="2" class="panel-container">
+				<p:outputLabel  for="login" value="Login:"  class="label" />
+				<p:inputText id="login" value="#{usuarioController.usuario.login}"
+					required="true" placeholder="E-mail" />
+				<p:outputLabel for="senha" value="Senha:"  class="label" />
+				<p:password id="senha" value="#{usuarioController.usuario.senha}"
+					required="true" />
+			</p:panelGrid>
+			<p:commandButton value="Entrar"
+				action="#{usuarioController.autenticar()}" ajax="false" />
+		</div>
+	</h:form>
+</h:body>
+</html>

@@ -1,0 +1,57 @@
+<ui:composition template="/template/template.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://java.sun.com/jsf/facelets">
+
+	<ui:param name="mostrarCampoBuscaPlano" value="true" />
+	<ui:define name="conteudo">
+		<h2 class="list-title">Plano de cuidados</h2>
+		<h:outputText
+			value="Bem-vindo, #{planoDeCuidadoController.usuarioLogado.colaborador.nome_colaborador}" />
+		<h:form id="formListar">
+			<p:messages id="msgs" style="color:red" />
+			<p:dataTable var="plano"
+				value="#{planoDeCuidadoController.listaPlanos()}"
+				emptyMessage="Nenhum paciente encontrado." paginator="true"
+				rows="10">
+				<p:column headerText="Colaborador">
+					<h:outputText value="#{plano.colaborador.nome_colaborador}" />
+				</p:column>
+				<p:column headerText="Paciente">
+					<h:outputText value="#{plano.paciente.nome_paciente}" />
+				</p:column>
+				<p:column headerText="Data da prescrição">
+					<h:outputText
+						value="#{pacienteController.formatarData(plano.dataPlano)}" />
+				</p:column>
+				<p:column headerText="Prescrição de enfermagem">
+					<p:inputTextarea value="#{plano.prescricao}" rows="1"
+						autoResize="true" readonly="true" />
+				</p:column>
+			</p:dataTable>
+		</h:form>
+
+		<h:form id="formDialogo">
+			<p:dialog header="Plano encontrado" widgetVar="dglBuscar"
+				modal="true" resizable="false">
+				<h:panelGrid columns="2">
+					<p:dataTable var="plano"
+						value="#{planoDeCuidadoController.getPlanosEncontrados()}"
+						emptyMessage="Nenhum Plano encontrado." paginator="true" rows="10">
+						<p:column headerText="Data da prescrição">
+							<h:outputText value="#{plano.dataPlano}" />
+						</p:column>
+						<p:column headerText="Paciente">
+							<h:outputText value="#{plano.paciente.nome_paciente}" />
+						</p:column>
+						<p:column headerText="Prescrição de enfermagem">
+							<h:outputText value="#{plano.prescricao}" />
+						</p:column>
+					</p:dataTable>
+				</h:panelGrid>
+			</p:dialog>
+		</h:form>
+	</ui:define>
+</ui:composition>

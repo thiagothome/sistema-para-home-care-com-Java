@@ -1,0 +1,85 @@
+<ui:composition template="/template/template.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://java.sun.com/jsf/facelets">
+
+	<ui:param name="mostrarCampoBuscaRecados" value="true" />
+	<ui:define name="conteudo">
+		<h2 class="list-title">Recados</h2>
+		<h:outputText
+			value="Bem-vindo, #{planoDeCuidadoController.usuarioLogado.colaborador.nome_colaborador}" />
+		<h:form id="formListar">
+			<p:messages id="msgs" style="color:red" />
+			<p:dataTable var="recado" value="#{recadoController.listaRecados()}"
+				emptyMessage="Nenhum recado encontrado." paginator="true" rows="10"
+				tableStyleClass="recado-table">
+				<p:column headerText="Data inserção" styleClass="recado-column">
+					<h:outputText
+						value="#{pacienteController.formatarData(recado.dataRecado)}" />
+				</p:column>
+				<p:column headerText="Mensagem" styleClass="recado-column">
+					<p:inputTextarea value="#{recado.mensagem}" rows="1"
+						autoResize="true" readonly="true" styleClass="recado-input" />
+				</p:column>
+				<p:column headerText="Colaborador" styleClass="recado-column">
+					<h:outputText value="#{recado.colaborador.nome_colaborador}" />
+				</p:column>
+				<p:column headerText="Ações" styleClass="recado-column">
+					<p:commandButton icon="fa fa-trash"
+						action="#{recadoController.excluir(recado)}" value="Excluir"
+						process="@this" ajax="true" styleClass="btn btn-danger btn-sm"
+						update="formListar" />
+					<p:commandButton icon="fa fa-edit" value="Responder"
+						process="@this" ajax="true" styleClass="btn btn-primary"
+						update="formEditar" oncomplete="PF('dlgEditar').show()">
+						<f:setPropertyActionListener value="#{recado}"
+							target="#{recadoController.recado}" />
+					</p:commandButton>
+					<p:commandButton icon="fa fa-edit"
+						action="#{respostaController.buscarResposta(recado)}"
+						value="Ver Resposta" process="@this" ajax="true"
+						styleClass="btn btn-primary" update="formVerResposta"
+						oncomplete="PF('dlgVerResposta').show()">
+					</p:commandButton>
+				</p:column>
+			</p:dataTable>
+		</h:form>
+
+
+		<p:dialog widgetVar="dlgEditar" header="Responder recado" modal="true"
+			resizable="false" width="600" height="auto">
+			<h:form id="formEditar">
+				<p:messages id="msgs" />
+				<p:panelGrid columns="2" style="margin-bottom:10px"
+					columnClasses="label,value">
+					<p:outputLabel for="msg" value="Mensagem" />
+
+					<p:outputLabel id="msg" value="#{recadoController.recado.mensagem}" />
+
+					<p:button value="Responder" outcome="/resposta.xhtml">
+						<f:param name="idRecado"
+							value="#{recadoController.recado.idRecado}" />
+					</p:button>
+				</p:panelGrid>
+			</h:form>
+		</p:dialog>
+
+		<h:form id="formVerResposta">
+			<p:messages id="msgs" />
+			<p:dialog widgetVar="dlgVerResposta" header="Resposta" modal="true"
+				resizable="false" width="600" height="auto">
+				<h:panelGrid columns="2">
+					<p:dataTable var="resposta" value="#{respostaController.respostas}"
+						emptyMessage="Nenhuma resposta encontrada." paginator="true"
+						rows="10">
+						<p:column headerText="Resposta">
+							<h:outputText value="#{resposta.mensagem}" />
+						</p:column>
+					</p:dataTable>
+				</h:panelGrid>
+			</p:dialog>
+		</h:form>
+	</ui:define>
+</ui:composition>

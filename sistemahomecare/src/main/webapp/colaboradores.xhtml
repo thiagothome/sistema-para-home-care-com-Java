@@ -1,0 +1,60 @@
+<ui:composition template="/template/template.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://java.sun.com/jsf/facelets">
+
+	<ui:param name="mostrarCampoBusca" value="false" />
+	<ui:define name="conteudo">
+		<h:form id="formSalvar">
+			<h1>Cadastro de colaboradores</h1>
+			<h:outputText
+				value="Bem-vindo, #{planoDeCuidadoController.usuarioLogado.colaborador.nome_colaborador}" />
+			<p:messages id="msgs" />
+			<p:panelGrid columns="2" style="margin-bottom:10px"
+				columnClasses="label,value">
+				<p:outputLabel for="nome" value="Nome:" />
+				<p:inputText id="nome"
+					value="#{colaboradorController.colaborador.nome_colaborador}"
+					required="true" />
+				<p:outputLabel value="Profissão:" />
+				<p:selectOneMenu id="profissao"
+					value="#{colaboradorController.profissaoSelecionada}"
+					required="true">
+					<f:selectItem itemLabel="Selecione uma profissão" itemValue="" />
+					<f:selectItems value="#{profissaoController.listaProfissoes}"
+						var="profissao" itemLabel="#{profissao.profissao}"
+						itemValue="#{profissao.profissao}" />
+				</p:selectOneMenu>
+				<p:outputLabel for="registro" value="Registro:" />
+				<p:inputText id="registro"
+					value="#{colaboradorController.colaborador.registro}"
+					required="true" />
+				<p:commandButton action="#{colaboradorController.salvar()}"
+					value="Salvar" update="formSalvar" />
+				<p:commandButton value="Nova Profissão"
+					onclick="PF('dialog').show();" />
+			</p:panelGrid>
+		</h:form>
+
+		<h:form id="dialogForm">
+			<p:dialog header="Cadastrar nova Profissão" widgetVar="dialog"
+				modal="true">
+				<h:panelGrid columns="2">
+					<h:outputLabel for="profissao" value="Profissão:" />
+					<p:inputText id="profissao"
+						value="#{profissaoController.profissao.profissao}" />
+
+					<p:commandButton value="Salvar"
+						action="#{profissaoController.salvar}"
+						oncomplete="PF('dialog').hide(); location.reload();"
+						update="profissao" process="@form" />
+
+					<p:commandButton value="Cancelar" onclick="PF('dialog').hide();"
+						update="@form" />
+				</h:panelGrid>
+			</p:dialog>
+		</h:form>
+	</ui:define>
+</ui:composition>

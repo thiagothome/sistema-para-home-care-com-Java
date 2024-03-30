@@ -1,0 +1,92 @@
+<ui:composition template="/template/template.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://java.sun.com/jsf/facelets">
+
+	<ui:param name="mostrarCampoBuscaColaborador" value="true" />
+	<ui:define name="conteudo">
+		<h2 class="list-title">Colaboradores</h2>
+		<h:outputText
+			value="Bem-vindo, #{planoDeCuidadoController.usuarioLogado.colaborador.nome_colaborador}" />
+		<h:form id="formListar">
+			<p:messages id="msgs" style="color:red" />
+			<p:dataTable var="colaborador"
+				value="#{colaboradorController.listaColaboradores()}"
+				emptyMessage="Nenhum colaborador encontrado." paginator="true"
+				rows="10">
+				<p:column headerText="Nome">
+					<h:outputText value="#{colaborador.nome_colaborador}" />
+				</p:column>
+				<p:column headerText="Profissão">
+					<h:outputText value="#{colaborador.profissao}" />
+				</p:column>
+				<p:column headerText="Registro">
+					<h:outputText value="#{colaborador.registro}" />
+				</p:column>
+				<p:column headerText="Ações">
+					<p:commandButton icon="fa fa-trash"
+						action="#{colaboradorController.excluir(colaborador)}"
+						value="Excluir" process="@this" ajax="true"
+						styleClass="btn btn-danger btn-sm" update="formListar" />
+
+					<p:commandButton icon="fa fa-edit" value="Editar" process="@this"
+						ajax="true" styleClass="btn btn-primary" update="formEditar"
+						oncomplete="PF('dlgEditar').show()">
+						<f:setPropertyActionListener value="#{colaborador}"
+							target="#{colaboradorController.colaborador}" />
+					</p:commandButton>
+				</p:column>
+
+			</p:dataTable>
+		</h:form>
+
+		<h:form id="formEditar">
+			<p:dialog widgetVar="dlgEditar" header="Editar colaborador"
+				modal="true" resizable="false" width="600" height="auto">
+				<p:messages id="msgsEditar" />
+
+				<p:panelGrid columns="2" style="margin-bottom:10px"
+					columnClasses="label,value">
+					<p:outputLabel for="nome" value="Nome:" />
+					<p:inputText id="nome"
+						value="#{colaboradorController.colaborador.nome_colaborador}" />
+
+					<p:outputLabel for="profissao" value="Profissão:" />
+					<p:inputText id="profissao"
+						value="#{colaboradorController.colaborador.profissao}" />
+
+					<p:outputLabel for="registro" value="Registro:" />
+					<p:inputText id="registro"
+						value="#{colaboradorController.colaborador.registro}" />
+					<p:commandButton action="#{colaboradorController.editar()}"
+						value="Salvar" update=":formListar :formEditar"
+						oncomplete="PF('dlgEditar').hide()" />
+				</p:panelGrid>
+			</p:dialog>
+		</h:form>
+
+		<h:form id="formDialogo">
+			<p:dialog header="colaborador encontrado" widgetVar="dglBuscar"
+				modal="true" resizable="false">
+				<h:panelGrid columns="2">
+					<p:dataTable var="colaborador"
+						value="#{colaboradorController.getColaboradoresEncontrados()}"
+						emptyMessage="Nenhum colaborador encontrado." paginator="true"
+						rows="10">
+						<p:column headerText="Nome">
+							<h:outputText value="#{colaborador.nome_colaborador}" />
+						</p:column>
+						<p:column headerText="Profissão">
+							<h:outputText value="#{colaborador.profissao}" />
+						</p:column>
+						<p:column headerText="Registro">
+							<h:outputText value="#{colaborador.registro}" />
+						</p:column>
+					</p:dataTable>
+				</h:panelGrid>
+			</p:dialog>
+		</h:form>
+	</ui:define>
+</ui:composition>
